@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
+
 namespace SSHKeyManager
 {
     public partial class SSHKeyManager : Form
@@ -9,21 +12,45 @@ namespace SSHKeyManager
 
         private void SSHKeyManager_Load(object sender, EventArgs e)
         {
-            String sshDirectory = 
+            String sshDirectory =
                 Environment.ExpandEnvironmentVariables("%USERPROFILE%\\.ssh");
 
-            foreach (String file in Directory.GetFiles(sshDirectory))   
-            {
-                if (file.EndsWith(".pub"))
-                {
-                    listSSHViewer.Items.Add(File.ReadAllText(file));
-                }
-            }
-        }
+            String algorithm = "";
+            String comment = "";
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            buttonRemove.Enabled = true;
+            foreach (String file in Directory.GetFiles(sshDirectory))
+            {
+                FileStream fs = File.OpenRead(file);
+
+                String fileContent = File.ReadAllText(file);
+
+                if (fileContent.ToLower().StartsWith("ssh-rsa"))
+                {
+                    algorithm = "SSH-RSA";
+                    comment = AlgorithmChecker.getComment(fileContent);
+                }
+                else if (fileContent.ToLower().StartsWith("ssh-dss"))
+                {
+                    algorithm = "SSH-DSS";
+                    comment = AlgorithmChecker.getComment(fileContent);
+                }
+                else if (fileContent.ToLower().StartsWith("ssh-ed25519"))
+                {
+                    algorithm = "SSH-Ed25519";
+                    comment = AlgorithmChecker.getComment(fileContent);
+                }
+                else
+                {
+                    continue;
+                }
+
+                ListViewItem item = new ListViewItem(algorithm);
+                item.SubItems.Add(comment);
+
+                listSSHViewer.Items.Add(item);
+
+            }
+
         }
 
         private void SSHKeyManager_Add(object sender, EventArgs e)
@@ -34,7 +61,19 @@ namespace SSHKeyManager
 
         private void SSHKeyManager_Remove(object sender, EventArgs e)
         {
-            listSSHViewer.Items.Remove(listSSHViewer.SelectedItem!);
+            listSSHViewer.Items.Remove(listSSHViewer.FocusedItem);
+        }
+
+        private void listSSHViewer_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.Cancel = true;
+            e.NewWidth = listSSHViewer.Columns[e.ColumnIndex].Width;
+        }
+
+        private void listSSHViewer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            buttonRemove.Enabled = (listSSHViewer.SelectedItems.Count > 0) ?
+                true : false;
         }
     }
 }

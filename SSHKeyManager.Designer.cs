@@ -29,29 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SSHKeyManager));
-            listSSHViewer = new ListBox();
             buttonAdd = new Button();
             buttonEdit = new Button();
             buttonRemove = new Button();
+            listSSHViewer = new ListView();
+            keyAlgorithm = new ColumnHeader();
+            keyComment = new ColumnHeader();
             SuspendLayout();
-            // 
-            // listSSHViewer
-            // 
-            listSSHViewer.FormattingEnabled = true;
-            listSSHViewer.ItemHeight = 15;
-            listSSHViewer.Location = new Point(10, 40);
-            listSSHViewer.Margin = new Padding(3, 2, 3, 2);
-            listSSHViewer.Name = "listSSHViewer";
-            listSSHViewer.Size = new Size(680, 289);
-            listSSHViewer.TabIndex = 1;
-            listSSHViewer.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // buttonAdd
             // 
-            buttonAdd.Location = new Point(10, 9);
-            buttonAdd.Margin = new Padding(3, 2, 3, 2);
+            buttonAdd.Location = new Point(11, 12);
             buttonAdd.Name = "buttonAdd";
-            buttonAdd.Size = new Size(82, 27);
+            buttonAdd.Size = new Size(94, 36);
             buttonAdd.TabIndex = 2;
             buttonAdd.Text = "Add";
             buttonAdd.UseVisualStyleBackColor = true;
@@ -61,10 +51,9 @@
             // 
             buttonEdit.Enabled = false;
             buttonEdit.FlatStyle = FlatStyle.System;
-            buttonEdit.Location = new Point(98, 9);
-            buttonEdit.Margin = new Padding(3, 2, 3, 2);
+            buttonEdit.Location = new Point(112, 12);
             buttonEdit.Name = "buttonEdit";
-            buttonEdit.Size = new Size(82, 27);
+            buttonEdit.Size = new Size(94, 36);
             buttonEdit.TabIndex = 3;
             buttonEdit.Text = "Edit";
             buttonEdit.UseVisualStyleBackColor = true;
@@ -72,28 +61,52 @@
             // buttonRemove
             // 
             buttonRemove.Enabled = false;
-            buttonRemove.Location = new Point(607, 9);
-            buttonRemove.Margin = new Padding(3, 2, 3, 2);
+            buttonRemove.Location = new Point(694, 12);
             buttonRemove.Name = "buttonRemove";
-            buttonRemove.Size = new Size(82, 27);
+            buttonRemove.Size = new Size(94, 36);
             buttonRemove.TabIndex = 4;
             buttonRemove.Text = "Remove";
             buttonRemove.UseVisualStyleBackColor = true;
             buttonRemove.Click += SSHKeyManager_Remove;
             // 
+            // listSSHViewer
+            // 
+            listSSHViewer.Columns.AddRange(new ColumnHeader[] { keyAlgorithm, keyComment });
+            listSSHViewer.FullRowSelect = true;
+            listSSHViewer.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            listSSHViewer.Location = new Point(11, 54);
+            listSSHViewer.Name = "listSSHViewer";
+            listSSHViewer.RightToLeft = RightToLeft.No;
+            listSSHViewer.Scrollable = false;
+            listSSHViewer.Size = new Size(777, 385);
+            listSSHViewer.TabIndex = 5;
+            listSSHViewer.UseCompatibleStateImageBehavior = false;
+            listSSHViewer.View = View.Details;
+            listSSHViewer.ColumnWidthChanging += listSSHViewer_ColumnWidthChanging;
+            listSSHViewer.SelectedIndexChanged += listSSHViewer_SelectedIndexChanged;
+            // 
+            // keyAlgorithm
+            // 
+            keyAlgorithm.Text = "Algorithm";
+            keyAlgorithm.Width = 125;
+            // 
+            // keyComment
+            // 
+            keyComment.Text = "Comment";
+            keyComment.Width = 650;
+            // 
             // SSHKeyManager
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(700, 338);
+            ClientSize = new Size(800, 451);
+            Controls.Add(listSSHViewer);
             Controls.Add(buttonRemove);
             Controls.Add(buttonEdit);
             Controls.Add(buttonAdd);
-            Controls.Add(listSSHViewer);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             HelpButton = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            Margin = new Padding(3, 2, 3, 2);
             MaximizeBox = false;
             Name = "SSHKeyManager";
             Text = "SSH Key Manager";
@@ -102,9 +115,11 @@
         }
 
         #endregion
-        private ListBox listSSHViewer;
         private Button buttonAdd;
         private Button buttonEdit;
         private Button buttonRemove;
+        private ListView listSSHViewer;
+        private ColumnHeader keyAlgorithm;
+        private ColumnHeader keyComment;
     }
 }
