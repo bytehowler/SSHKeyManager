@@ -27,22 +27,21 @@ namespace SSHKeyManager
                 if (fileContent.ToLower().StartsWith("ssh-rsa"))
                 {
                     algorithm = "SSH-RSA";
-                    comment = AlgorithmChecker.getComment(fileContent);
                 }
                 else if (fileContent.ToLower().StartsWith("ssh-dss"))
                 {
                     algorithm = "SSH-DSS";
-                    comment = AlgorithmChecker.getComment(fileContent);
                 }
                 else if (fileContent.ToLower().StartsWith("ssh-ed25519"))
                 {
                     algorithm = "SSH-Ed25519";
-                    comment = AlgorithmChecker.getComment(fileContent);
                 }
                 else
                 {
                     continue;
                 }
+
+                comment = AlgorithmChecker.getComment(fileContent);
 
                 ListViewItem item = new ListViewItem(algorithm);
                 item.SubItems.Add(comment);
